@@ -1,11 +1,16 @@
 import { PassThrough } from "stream";
-import type { EntryContext } from "@remix-run/node";
 import { Response } from "@remix-run/node";
-import { RemixServer } from "@remix-run/react";
 import isbot from "isbot";
+
 import { renderToPipeableStream } from "react-dom/server";
+import { renderToString } from "react-dom/server";
+import { RemixServer } from "@remix-run/react";
+import type { EntryContext } from "@remix-run/node";
+import { injectStyles, createStylesServer } from "@mantine/remix";
 
 const ABORT_DELAY = 5000;
+
+const server = createStylesServer();
 
 export default function handleRequest(
   request: Request,
@@ -25,13 +30,16 @@ export default function handleRequest(
       {
         [callbackName]: () => {
           const body = new PassThrough();
+          let markup = renderToString(
+            <RemixServer context={remixContext} url={request.url} />
+          );
 
           responseHeaders.set("Content-Type", "text/html");
 
           resolve(
-            new Response(body, {
-              headers: responseHeaders,
+            new Response(`<!DOCTYPE html>${injectStyles(markup, server)}`, {
               status: didError ? 500 : responseStatusCode,
+              headers: responseHeaders,
             })
           );
 
