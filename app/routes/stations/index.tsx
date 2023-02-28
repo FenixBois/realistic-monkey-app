@@ -3,7 +3,6 @@ import type {ActionFunction} from "@remix-run/router";
 import {prisma} from "~/db.server";
 import {Form, useLoaderData} from "@remix-run/react";
 import {zfd} from 'zod-form-data';
-import {Simulate} from "react-dom/test-utils";
 
 const stationSchema = zfd.formData({
     name: zfd.text()

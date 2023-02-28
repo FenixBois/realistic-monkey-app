@@ -6,6 +6,8 @@ import { getUserById } from "~/models/user.server";
 
 invariant(process.env.SESSION_SECRET, "SESSION_SECRET must be set");
 
+export const REDIRECT_TO_QUERY_PARAM = "redirectTo";
+
 export const sessionStorage = createCookieSessionStorage({
   cookie: {
     name: "__session",
@@ -48,7 +50,7 @@ export async function requireUserId(
 ) {
   const userId = await getUserId(request);
   if (!userId) {
-    const searchParams = new URLSearchParams([["redirectTo", redirectTo]]);
+    const searchParams = new URLSearchParams([[REDIRECT_TO_QUERY_PARAM, redirectTo]]);
     throw redirect(`/login?${searchParams}`);
   }
   return userId;
