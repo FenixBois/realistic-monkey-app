@@ -19,7 +19,7 @@ export function LocationList() {
             <Title>Locations</Title>
             <Stack w={264} pt={32}>
                 {locations.map(({ id, name }) => (
-                    <Link href={`location/${id}`}>
+                    <Link key={id} href={`location/${id}`}>
                         <Paper
                             shadow='sm'
                             radius='md'

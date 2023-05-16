@@ -1,0 +1,12 @@
+name: "realistic-monkey"
+services:
+  posgresql:
+    image: postgres
+    restart: on-failure
+    environment:
+      POSTGRES_DB: "monkey"
+      POSTGRES_PASSWORD: "monkey"
+    ports:
+      - 5432:5432
+    volumes:
+      - ".data/mariadb:/var/lib/postgres"
