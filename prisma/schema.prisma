@@ -52,7 +52,12 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model Location {
+  id   String @id @default(cuid())
+  name String
 
+  stations Station[]
+}
 
 model Station {
   id   String @id @default(cuid())
@@ -66,16 +71,27 @@ model Station {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  data StationData[]
+  data       StationData[]
+  location   Location?     @relation(fields: [locationId], references: [id])
+  locationId String?
 }
 
 model StationData {
-  id        DateTime @id @default(now())
-  stationId String
-  station   Station  @relation(fields: [stationId], references: [id])
+  datetime             DateTime                   @default(now())
+  stationId            String
+  station              Station                    @relation(fields: [stationId], references: [id])
+  aggregation          StationDataAggregationType
+  aggregationFinalized Boolean                    @default(true)
+  humidity             Float
+  temperature          Float
 
-  humidity    Float
-  temperature Float
+  @@id([datetime, aggregation, stationId])
+}
+
+enum StationDataAggregationType {
+  HOUR
+  DAY
+  NONE
 }
 
 enum StationState {
