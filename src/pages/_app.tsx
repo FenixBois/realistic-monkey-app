@@ -1,23 +1,23 @@
-import {type AppType} from "next/app";
-import {type Session} from "next-auth";
-import {SessionProvider} from "next-auth/react";
+import { type AppType } from 'next/app';
+import { type Session } from 'next-auth';
+import { SessionProvider } from 'next-auth/react';
 
-import {api} from "~/utils/api";
+import { api } from '~/utils/api';
 
-import "~/styles/globals.css";
-import {MantineProvider} from "@mantine/core";
+import '~/styles/globals.css';
+import { MantineProvider } from '@mantine/core';
 
-const MyApp: AppType<{ session: Session | null }> = (
-    {
-        Component,
-        pageProps: {session, ...pageProps},
-    }) => {
+const MyApp: AppType<{ session: Session | null }> = ({
+    Component,
+    pageProps: { session, ...pageProps },
+}) => {
     return (
         <SessionProvider session={session}>
             <MantineProvider
-            withNormalizeCSS
-            withGlobalStyles
-            theme={{colorScheme:"light"}}>
+                withNormalizeCSS
+                withGlobalStyles
+                theme={{ colorScheme: 'dark', primaryColor: 'yellow' }}
+            >
                 <Component {...pageProps} />
             </MantineProvider>
         </SessionProvider>
