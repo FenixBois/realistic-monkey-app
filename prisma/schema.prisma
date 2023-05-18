@@ -72,14 +72,14 @@ model Station {
   updatedAt DateTime @updatedAt
 
   data       StationData[]
-  location   Location?     @relation(fields: [locationId], references: [id])
+  location   Location?     @relation(fields: [locationId], references: [id], onDelete: Cascade)
   locationId String?
 }
 
 model StationData {
   datetime             DateTime                   @default(now())
   stationId            String
-  station              Station                    @relation(fields: [stationId], references: [id])
+  station              Station                    @relation(fields: [stationId], references: [id], onDelete: Cascade)
   aggregation          StationDataAggregationType
   aggregationFinalized Boolean                    @default(true)
   humidity             Float

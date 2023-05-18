@@ -107,5 +107,53 @@ export const stationRouter = createTRPCRouter({
         }))
         .query(async ({input: {id}, ctx: {prisma}}) => {
             return prisma.station.findUnique({where: {id}});
+        }),
+    activate: protectedProcedure
+        .input(z.object({
+            id: z.string().cuid(),
+            locationId: z.string().cuid().optional()
+        }))
+        .mutation(async ({input: {id, locationId}, ctx: {prisma}}) => {
+            return prisma.$transaction(async (prisma) => {
+                const station = await prisma.station.findUnique({where: {id}});
+                if (!station) {
+                    throw new TRPCError({code: "NOT_FOUND", message: "Station not found"});
+                }
+                if (station.state !== "REGISTERED") {
+                    throw new TRPCError({code: "PRECONDITION_FAILED", message: "Station is already active/inactive"});
+                }
+                const location = locationId ? {connect: {id: locationId}} : undefined;
+                return prisma.station.update({where: {id}, data: {state: "ACTIVE", location}})
+            })
+        }),
+    deactivate: protectedProcedure
+        .input(z.object({
+            id: z.string().cuid()
+        }))
+        .mutation(async ({input: where, ctx: {prisma}}) => {
+            return prisma.$transaction(async (prisma) => {
+                const station = await prisma.station.findUnique({where});
+                if (!station) {
+                    throw new TRPCError({code: "NOT_FOUND", message: "Station not found"});
+                }
+                if (station.state !== "ACTIVE") {
+                    throw new TRPCError({code: "PRECONDITION_FAILED", message: "Station is already active/inactive"});
+                }
+                return prisma.station.update({where, data: {state: "INACTIVE"}})
+            })
+        }),
+    edit: protectedProcedure
+        .input(z.object({
+            id: z.string().cuid(),
+            name: z.string()
+        }))
+        .mutation(async ({input: {id, ...data}, ctx: {prisma}}) => {
+            return prisma.station.update({where: {id}, data})
+        }),
+    delete: protectedProcedure
+        .input(z.object({
+            id: z.string().cuid()
+        })).mutation(async ({input: where, ctx: { prisma }}) => {
+            return prisma.station.delete({where});
         })
 });
