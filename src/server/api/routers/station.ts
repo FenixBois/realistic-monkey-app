@@ -51,7 +51,7 @@ export const stationRouter = createTRPCRouter({
             return result.token;
         }),
 
-    uploadData: protectedProcedure
+    uploadData: publicProcedure
         .input(uploadDataSchema)
         .mutation(async ({input: {token, data: batchData}, ctx: {prisma: prismaCtx}}) => {
             return prismaCtx.$transaction(async (prisma) => {
