@@ -3,12 +3,15 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Role } from '@prisma/client';
 
+import { UserProfile } from '@components';
+
 export function Navbar() {
     const { data: session } = useSession();
 
     const handleClick = async () => {
-        await signIn('google')
-    }
+        await signIn('google');
+    };
+
     return (
         <Header height={60}>
             <Container
@@ -26,7 +29,7 @@ export function Navbar() {
                             mr={16}
                             sx={{ '&:hover': { textDecoration: 'underline' } }}
                         >
-                            🍌 Realistic Monkey App
+                            🍌 Realistic Monkey
                         </Title>
                     </Link>
                     <Link href='/' passHref>
@@ -46,16 +49,17 @@ export function Navbar() {
                                 <Button variant='light'>Manage stations</Button>
                             </Link>
                         )}
-                        <Button onClick={() => signOut()} variant='default'>
-                            Sign out
-                        </Button>
+
+                        <>
+                            <UserProfile />
+                            <Button onClick={() => signOut()} variant='default'>
+                                Sign out
+                            </Button>
+                        </>
                     </Group>
                 ) : (
                     <Group>
-                        <Link href='/'></Link>
-                        <Button onClick={handleClick}>
-                            Sign in
-                        </Button>
+                        <Button onClick={handleClick}>Sign in</Button>
                     </Group>
                 )}
             </Container>

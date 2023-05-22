@@ -2,8 +2,6 @@ import Link from 'next/link';
 import { Paper, Title, Text, Loader, Accordion } from '@mantine/core';
 import { api } from '~/utils/api';
 export function LocationList() {
-
-    // TODO Fetch locations from TRPC
     const {
         isLoading,
         isError,
