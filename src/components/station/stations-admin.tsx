@@ -1,17 +1,16 @@
+import { api } from '~/utils/api';
 import { Button, Flex, Loader, Modal, Paper, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-
-import { LocationSelect } from '@components';
-
-import { api } from '~/utils/api';
+import { LocationSelect } from '~/components/location/location-select';
 
 export function StationsAdmin() {
+    const utils = api.useContext();
     const [opened, { open, close }] = useDisclosure(false);
     const {
         isLoading,
         isError,
         error,
-        data: registeredStations,
+        data: registeredStations
     } = api.station.registered.useQuery();
 
     if (isLoading) {
@@ -22,11 +21,14 @@ export function StationsAdmin() {
         return <Text>{error.message}</Text>;
     }
 
+    const handleSubmit = () => {
+        utils.station.registered.invalidate().then(() => {
+            close();
+        });
+    };
+
     return (
         <div>
-            <Modal opened={opened} onClose={close} title='Activate station'>
-                <LocationSelect />
-            </Modal>
             <h1>Stations Admin</h1>
             {registeredStations.map((station) => (
                 <Paper
@@ -35,15 +37,10 @@ export function StationsAdmin() {
                     radius='md'
                     p='md'
                     m='sm'
-                    sx={(theme) => ({
-                        '&:hover': {
-                            backgroundColor:
-                                theme.colorScheme === 'dark'
-                                    ? theme.colors.gray
-                                    : theme.colors.gray[1],
-                        },
-                    })}
                 >
+                    <Modal opened={opened} onClose={close} title='Activate station'>
+                        <LocationSelect stationId={station.id} onSubmit={handleSubmit} />
+                    </Modal>
                     <Flex justify='space-between' align='center'>
                         <Text td='underline'>{station.name}</Text>
                         <Button color='lime' onClick={open}>

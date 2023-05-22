@@ -18,7 +18,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
             <MantineProvider
                 withNormalizeCSS
                 withGlobalStyles
-                theme={{ colorScheme: 'dark', primaryColor: 'yellow' }}
+                theme={{ colorScheme: 'light', primaryColor: 'yellow' }}
             >
                 <Component {...pageProps} />
                 <ReactQueryDevtools initialIsOpen={true} />
