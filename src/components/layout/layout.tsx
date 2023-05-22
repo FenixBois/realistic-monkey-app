@@ -1,6 +1,6 @@
 import { Container } from '@mantine/core';
-import { Navbar } from '~/components/navbar/navbar';
-import { Fragment } from 'react';
+
+import { Navbar } from '@components';
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -8,9 +8,9 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
     return (
-        <Fragment>
+        <>
             <Navbar />
             <Container pt={32}>{children}</Container>
-        </Fragment>
+        </>
     );
 }

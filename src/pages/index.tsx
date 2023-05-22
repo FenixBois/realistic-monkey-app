@@ -1,13 +1,9 @@
 import { type NextPage } from 'next';
 
-import { LocationList, Layout } from '@components';
+import { Layout, Dashboard } from '@components';
 
 const Home: NextPage = () => {
-    return (
-        <Layout>
-            <LocationList />
-        </Layout>
-    );
+    return <Layout>Home</Layout>;
 };
 
 export default Home;

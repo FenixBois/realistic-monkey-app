@@ -35,7 +35,7 @@ export function Navbar() {
                             🍌 Realistic Monkey
                         </Title>
                     </Link>
-                    <Link href='/' passHref>
+                    <Link href='/locations' passHref>
                         <Title
                             order={5}
                             mr={16}
@@ -45,6 +45,7 @@ export function Navbar() {
                         </Title>
                     </Link>
                 </Flex>
+
                 {session ? (
                     <Group>
                         {session.user?.role === Role.ADMIN && (
