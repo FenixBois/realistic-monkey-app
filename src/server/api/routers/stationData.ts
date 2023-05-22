@@ -50,6 +50,6 @@ export const stationDataRouter = createTRPCRouter({
                                           WHERE "stationId" = ${stationId} AND datetime >= ${gte} AND datetime <= ${lte}
                                           GROUP BY d
                                           ORDER BY d`) as {t: number, h: number, d: number}[];
-            return data.map(({t: temperature,h: humidity,d: datetime}) => ({temperature, humidity, datetime}))
+            return data.map(({t: temperature,h: humidity,d: datetime}) => ({temperature, humidity, datetime: datetime * 60 *numberOfMinutes}))
         }),
 });
