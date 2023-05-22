@@ -1,5 +1,5 @@
 import { api } from '~/utils/api';
-import { Button, Flex, Loader, Modal, Paper, Text } from '@mantine/core';
+import { Button, Flex, Loader, Modal, Paper, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { LocationSelect } from '~/components/location/location-select';
 
@@ -12,6 +12,7 @@ export function StationsAdmin() {
         error,
         data: registeredStations
     } = api.station.registered.useQuery();
+
 
     if (isLoading) {
         return <Loader />;
@@ -29,14 +30,14 @@ export function StationsAdmin() {
 
     return (
         <div>
-            <h1>Stations Admin</h1>
+            <Title>Stations Admin</Title>
             {registeredStations.map((station) => (
                 <Paper
                     key={station.id}
                     withBorder
                     radius='md'
                     p='md'
-                    m='sm'
+                    mt='sm'
                 >
                     <Modal opened={opened} onClose={close} title='Activate station'>
                         <LocationSelect stationId={station.id} onSubmit={handleSubmit} />
