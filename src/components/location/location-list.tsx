@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Paper, Title, Text, Loader, Accordion } from '@mantine/core';
 import { api } from '~/utils/api';
 export function LocationList() {
+
     // TODO Fetch locations from TRPC
     const {
         isLoading,
@@ -21,16 +22,21 @@ export function LocationList() {
     return (
         <div>
             <Title>Locations</Title>
-            <Accordion variant='separated' pt={32}>
+            <Accordion
+                variant='separated'
+                pt={32}
+            >
                 {locations.map((location) => (
                     <Accordion.Item key={location.id} value={location.name}>
                         <Accordion.Control>{location.name}</Accordion.Control>
+                        <Accordion.Panel>
                         {location.stations.map((station) => (
                             <Link
                                 key={station.id}
                                 href={`station/${station.id}`}
                             >
                                 <Paper
+                                    withBorder
                                     radius='md'
                                     p='md'
                                     m='sm'
@@ -47,6 +53,7 @@ export function LocationList() {
                                 </Paper>
                             </Link>
                         ))}
+                        </Accordion.Panel>
                     </Accordion.Item>
                 ))}
             </Accordion>

@@ -37,13 +37,15 @@ declare module 'next-auth' {
  */
 export const authOptions: NextAuthOptions = {
     callbacks: {
-        session: ({ session, user }) => ({
-            ...session,
-            user: {
-                ...session.user,
-                id: user.id,
-            },
-        }),
+        session: ({ session, user }) => {
+            if (session.user) {
+                session.user.id = user.id;
+                // @ts-expect-error - bug in next-auth types
+                session.user.role = user?.role;
+            }
+
+            return session;
+        },
     },
     adapter: PrismaAdapter(prisma),
     providers: [

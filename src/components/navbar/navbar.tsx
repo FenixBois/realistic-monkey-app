@@ -1,6 +1,7 @@
-import { Button, Container, Group, Header, Title } from '@mantine/core';
+import { Button, Container, Flex, Group, Header, Title } from '@mantine/core';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { Role } from '@prisma/client';
 
 export function Navbar() {
     const { data: session } = useSession();
@@ -15,7 +16,7 @@ export function Navbar() {
                     height: '100%',
                 }}
             >
-                <Group>
+                <Flex align='baseline' gap='md'>
                     <Link href='/' passHref>
                         <Title
                             order={3}
@@ -25,12 +26,23 @@ export function Navbar() {
                             🍌 Realistic Monkey App
                         </Title>
                     </Link>
-                </Group>
+                    <Link href='/' passHref>
+                        <Title
+                            order={5}
+                            mr={16}
+                            sx={{ '&:hover': { textDecoration: 'underline' } }}
+                        >
+                            Locations
+                        </Title>
+                    </Link>
+                </Flex>
                 {session ? (
                     <Group>
-                        <Link href='admin/stations' passHref>
-                            <Button variant='light'>Manage stations</Button>
-                        </Link>
+                        {session.user?.role === Role.ADMIN && (
+                            <Link href='/admin/stations' passHref>
+                                <Button variant='light'>Manage stations</Button>
+                            </Link>
+                        )}
                         <Button onClick={() => signOut()} variant='default'>
                             Sign out
                         </Button>

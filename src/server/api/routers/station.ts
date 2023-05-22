@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { type Prisma, StationState } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
-import {Role} from ".prisma/client";
+import {Role} from "@prisma/client";
 
 // TODO move validations elsewhere
 
