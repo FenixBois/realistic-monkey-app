@@ -1,7 +1,5 @@
-import {createTRPCRouter, protectedProcedure, publicProcedure} from "~/server/api/trpc";
-import {z} from "zod";
-import {Role} from ".prisma/client";
-
+import { createTRPCRouter, protectedProcedure, publicProcedure} from '~/server/api/trpc';
+import { z } from 'zod';import {Role} from ".prisma/client";
 
 export const locationRouter = createTRPCRouter({
     create: protectedProcedure(Role.ADMIN)
@@ -11,10 +9,9 @@ export const locationRouter = createTRPCRouter({
         .mutation(async ({input: data, ctx: {prisma}}) => {
             return prisma.location.create({data});
         }),
-    getAll: publicProcedure
-        .query(async ({ctx: {prisma}}) => {
-            return prisma.location.findMany()
-        }),
+    getAll: publicProcedure.query(async ({ ctx: { prisma } }) => {
+        return prisma.location.findMany({ include: { stations: true } });
+    }),
     getById: publicProcedure
         .input(z.object({
             id: z.string().cuid()

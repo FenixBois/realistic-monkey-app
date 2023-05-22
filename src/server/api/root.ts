@@ -1,5 +1,5 @@
-import {createTRPCRouter} from "~/server/api/trpc";
-import {stationRouter} from "~/server/api/routers/station";
+import { createTRPCRouter } from '~/server/api/trpc';
+import { stationRouter } from '~/server/api/routers/station';
 import {locationRouter} from "~/server/api/routers/location";
 import {stationDataRouter} from "~/server/api/routers/stationData";
 
