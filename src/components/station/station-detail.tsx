@@ -8,7 +8,7 @@ interface StationDetailProps {
 }
 
 export function StationDetail({ station }: StationDetailProps) {
-    if (!station) return;
+    if (!station) return null;
 
     return (
         <div>
