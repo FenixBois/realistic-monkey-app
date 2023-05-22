@@ -15,7 +15,7 @@ const findExtremes = (data: z.infer<typeof uploadDataSchema>['data']) => {
     let min = data[0]!.date;
     let max = min;
 
-    for (let { date } of data) {
+    for (const { date } of data) {
         if (min > date) {
             min = date;
         }

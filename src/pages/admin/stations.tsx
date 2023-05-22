@@ -11,14 +11,17 @@ export default function Stations() {
     );
 }
 
-export async function getServerSideProps(context: any) {
+
+
+
+// @ts-ignore
+export async function getServerSideProps(context) {
     const session = await getServerSession(
         context.req,
         context.res,
         authOptions
     );
 
-    console.log(session);
 
     if (!session || (session && session.user.role !== Role.ADMIN)) {
         return {

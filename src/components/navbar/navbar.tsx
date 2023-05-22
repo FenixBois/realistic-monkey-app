@@ -6,6 +6,9 @@ import { Role } from '@prisma/client';
 export function Navbar() {
     const { data: session } = useSession();
 
+    const handleClick = async () => {
+        await signIn('google')
+    }
     return (
         <Header height={60}>
             <Container
@@ -50,7 +53,7 @@ export function Navbar() {
                 ) : (
                     <Group>
                         <Link href='/'></Link>
-                        <Button onClick={() => signIn('google')}>
+                        <Button onClick={handleClick}>
                             Sign in
                         </Button>
                     </Group>
