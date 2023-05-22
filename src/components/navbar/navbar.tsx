@@ -1,5 +1,5 @@
 import { Button, Container, Flex, Group, Header, Title } from '@mantine/core';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Role } from '@prisma/client';
 
@@ -19,7 +19,7 @@ export function Navbar() {
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    height: '100%',
+                    height: '100%'
                 }}
             >
                 <Flex align='baseline' gap='md'>
@@ -50,13 +50,7 @@ export function Navbar() {
                                 <Button variant='light'>Manage stations</Button>
                             </Link>
                         )}
-
-                        <>
-                            <UserProfile />
-                            <Button onClick={() => signOut()} variant='default'>
-                                Sign out
-                            </Button>
-                        </>
+                        <UserProfile />
                     </Group>
                 ) : (
                     <Group>
