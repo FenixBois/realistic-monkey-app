@@ -4,6 +4,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { LocationSelect } from '~/components/location/location-select';
 
 export function StationsAdmin() {
+    const utils = api.useContext();
     const [opened, { open, close }] = useDisclosure(false);
     const {
         isLoading,
@@ -20,27 +21,26 @@ export function StationsAdmin() {
         return <Text>{error.message}</Text>;
     }
 
+    const handleSubmit = () => {
+        utils.station.registered.invalidate().then(() => {
+            close();
+        });
+    };
+
     return (
         <div>
-            <Modal opened={opened} onClose={close} title='Activate station'>
-                <LocationSelect />
-            </Modal>
             <h1>Stations Admin</h1>
             {registeredStations.map((station) => (
                 <Paper
+                    key={station.id}
                     withBorder
                     radius='md'
                     p='md'
                     m='sm'
-                    sx={(theme) => ({
-                        '&:hover': {
-                            backgroundColor:
-                                theme.colorScheme === 'dark'
-                                    ? theme.colors.gray
-                                    : theme.colors.gray[1]
-                        }
-                    })}
                 >
+                    <Modal opened={opened} onClose={close} title='Activate station'>
+                        <LocationSelect stationId={station.id} onSubmit={handleSubmit} />
+                    </Modal>
                     <Flex justify='space-between' align='center'>
                         <Text td='underline'>{station.name}</Text>
                         <Button color='lime' onClick={open}>
