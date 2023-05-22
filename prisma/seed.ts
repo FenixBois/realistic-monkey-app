@@ -31,7 +31,7 @@ async function main() {
                     {
                         name: 'Station 2',
                         gatewayInfo: 'Gateway 2',
-                        state: StationState.INACTIVE,
+                        state: StationState.REGISTERED,
                         data: {
                             create: [
                                 {
@@ -48,7 +48,46 @@ async function main() {
         },
     });
 
-    console.log('Created Location:', location1);
+    const location2 = await prisma.location.create({
+        data: {
+            name: 'Location 2',
+            stations: {
+                create: [
+                    {
+                        name: 'Station 3',
+                        gatewayInfo: 'Gateway 3',
+                        state: StationState.REGISTERED,
+                        data: {
+                            create: [
+                                {
+                                    aggregation:
+                                    StationDataAggregationType.NONE,
+                                    aggregationFinalized: true,
+                                    humidity: 50.0,
+                                    temperature: 20.0,
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        name: 'Station 4',
+                        gatewayInfo: 'Gateway 4',
+                        state: StationState.INACTIVE,
+                        data: {
+                            create: [
+                                {
+                                    aggregation: StationDataAggregationType.DAY,
+                                    aggregationFinalized: true,
+                                    humidity: 40.0,
+                                    temperature: 15.0,
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    });
 }
 
 main()
