@@ -1,12 +1,15 @@
-import { Button, Container, Flex, Group, Header, Title } from '@mantine/core';
+import { ActionIcon, Affix, Button, Container, Flex, Group, Header, Title, useMantineColorScheme } from '@mantine/core';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Role } from '@prisma/client';
 
 import { UserProfile } from '@components';
+import { IconMoonStars, IconSun } from '@tabler/icons-react';
 
 export function Navbar() {
     const { data: session } = useSession();
+    const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+    const dark = colorScheme === 'dark';
 
     const handleClick = async () => {
         await signIn('google');
@@ -58,6 +61,17 @@ export function Navbar() {
                     </Group>
                 )}
             </Container>
+            <Affix position={{ bottom: 20, right: 20 }}>
+                <ActionIcon
+                    variant='light'
+                    color={'yellow'}
+                    onClick={() => toggleColorScheme()}
+                    title='Toggle color scheme'
+                    size={40}
+                >
+                    {dark ? <IconSun size={20} /> : <IconMoonStars size={20} />}
+                </ActionIcon>
+            </Affix>
         </Header>
     );
 }
