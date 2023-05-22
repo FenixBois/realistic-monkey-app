@@ -78,21 +78,13 @@ model Station {
 }
 
 model StationData {
-  datetime             DateTime                   @default(now())
-  stationId            String
-  station              Station                    @relation(fields: [stationId], references: [id], onDelete: Cascade)
-  aggregation          StationDataAggregationType
-  aggregationFinalized Boolean                    @default(true)
-  humidity             Float
-  temperature          Float
+  datetime    DateTime @default(now())
+  stationId   String
+  station     Station  @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  humidity    Float
+  temperature Float
 
-  @@id([datetime, aggregation, stationId])
-}
-
-enum StationDataAggregationType {
-  HOUR
-  DAY
-  NONE
+  @@id([datetime, stationId])
 }
 
 enum StationState {

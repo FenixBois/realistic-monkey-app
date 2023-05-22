@@ -1,8 +1,10 @@
-import { Layout } from '~/layout/layout';
 import { GetServerSideProps } from 'next';
+
 import { api } from '~/utils/api';
+
 import { Loader, Text } from '@mantine/core';
-import { StationDetail } from '~/components/station/station-detail';
+
+import { StationDetail, Layout } from '@components';
 
 export default function Location({ id }: { id: string }) {
     const { data, isLoading, isError, error } = api.station.getById.useQuery({
@@ -25,7 +27,7 @@ export default function Location({ id }: { id: string }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const { id } =  context.query;
+    const { id } = context.query;
 
     return {
         props: {

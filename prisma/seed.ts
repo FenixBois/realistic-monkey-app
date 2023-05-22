@@ -1,7 +1,6 @@
 import {
     PrismaClient,
     StationState,
-    StationDataAggregationType,
 } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -19,9 +18,6 @@ async function main() {
                         data: {
                             create: [
                                 {
-                                    aggregation:
-                                        StationDataAggregationType.NONE,
-                                    aggregationFinalized: true,
                                     humidity: 50.0,
                                     temperature: 20.0,
                                 },
@@ -35,8 +31,6 @@ async function main() {
                         data: {
                             create: [
                                 {
-                                    aggregation: StationDataAggregationType.DAY,
-                                    aggregationFinalized: true,
                                     humidity: 40.0,
                                     temperature: 15.0,
                                 },
@@ -60,9 +54,6 @@ async function main() {
                         data: {
                             create: [
                                 {
-                                    aggregation:
-                                    StationDataAggregationType.NONE,
-                                    aggregationFinalized: true,
                                     humidity: 50.0,
                                     temperature: 20.0,
                                 },
@@ -76,8 +67,6 @@ async function main() {
                         data: {
                             create: [
                                 {
-                                    aggregation: StationDataAggregationType.DAY,
-                                    aggregationFinalized: true,
                                     humidity: 40.0,
                                     temperature: 15.0,
                                 },

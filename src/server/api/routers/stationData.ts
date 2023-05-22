@@ -1,43 +1,65 @@
 import {createTRPCRouter, publicProcedure} from "~/server/api/trpc";
 import {z} from "zod";
-import {StationDataAggregationType} from ".prisma/client";
+
+
+const StationDataGranularity = {
+    MINUTE: "MINUTE",
+    FIVE_MINUTES: "FIVE_MINUTES",
+    TEN_MINUTES: "TEN_MINUTES",
+    HALF_HOUR: "HALF_HOUR",
+    HOUR: "HOUR",
+    DAY: "DAY"
+} as const;
 
 const MINUTES = 60;
-const HOURS = 60*MINUTES;
+const HOURS = 60 * MINUTES;
 const DAYS = 24 * HOURS;
 
-const maxDifferenceForAggregationInSeconds = {
-    [StationDataAggregationType.NONE]: 60 * MINUTES,
-    [StationDataAggregationType.DAY]: 60 * DAYS,
-    [StationDataAggregationType.HOUR]: 60 * HOURS
+// noinspection PointlessArithmeticExpressionJS
+const maxDifferenceForGranularityInSeconds = {
+    [StationDataGranularity.DAY]: 60 * DAYS,
+    [StationDataGranularity.HOUR]: 60 * HOURS,
+    [StationDataGranularity.HALF_HOUR]: 30 * HOURS,
+    [StationDataGranularity.TEN_MINUTES]: 10 * HOURS,
+    [StationDataGranularity.FIVE_MINUTES]: 5 * HOURS,
+    [StationDataGranularity.MINUTE]: 1 * HOURS
 };
+
+const numberOfMinutesForGranularity = {
+    [StationDataGranularity.DAY]: 60 * 24,
+    [StationDataGranularity.HOUR]: 60,
+    [StationDataGranularity.HALF_HOUR]: 30,
+    [StationDataGranularity.TEN_MINUTES]: 10,
+    [StationDataGranularity.FIVE_MINUTES]: 5,
+    [StationDataGranularity.MINUTE]: 1
+}
+
+
 
 const getDataSchema = z.object({
     stationId: z.string().cuid(),
-    aggregation: z.nativeEnum(StationDataAggregationType),
+    granularity: z.nativeEnum(StationDataGranularity),
     from: z.date(),
     to: z.date()
 })
-    .refine(({from, to}) => to >= from, {message: "\"To\" should be after \"from\""})
+    .refine(({from, to}) => to > from, {message: "\"To\" should be after \"from\""})
     .refine(
-        ({from, to, aggregation}) =>  to.getUTCSeconds() - from.getUTCSeconds() < maxDifferenceForAggregationInSeconds[aggregation],
-        ({aggregation}) => ({message: `Max difference allowed is ${maxDifferenceForAggregationInSeconds[aggregation]}s`})
+        ({
+             from,
+             to,
+             granularity
+         }) => to.getUTCSeconds() - from.getUTCSeconds() < maxDifferenceForGranularityInSeconds[granularity],
+        ({granularity}) => ({message: `Max difference allowed is ${maxDifferenceForGranularityInSeconds[granularity]}s`})
     );
 
 export const stationDataRouter = createTRPCRouter({
     getDataForStationById: publicProcedure
         .input(getDataSchema)
-        .query(async ({input: {stationId, aggregation, from: gte, to: lte}, ctx: {prisma}}) => {
-            return prisma.stationData.findMany({where: {stationId, aggregation, datetime: {gte, lte}}});
+        .query(async ({input: {stationId, granularity, from: gte, to: lte}, ctx: {prisma}}) => {
+            const numberOfMinutes = numberOfMinutesForGranularity[granularity];
+            return await prisma.$queryRaw`SELECT AVG(temperature) temperature, AVG(humdidity) humidity, ROUND(extract(epoch from datetime) / (60 * ${numberOfMinutes})) datetime 
+                                          FROM "StationData"
+                                          WHERE stationId = ${stationId} AND datetime >= ${gte} AND date <= ${lte}
+                                          GROUP BY ROUND(extract(epoch from datetime) / (60 * ${numberOfMinutes}))`
         }),
-    refreshHourAggregationCache: publicProcedure
-        .mutation(async () => {
-            // TODO refresh those with finalized: false
-            // TODO create new ones
-        }),
-    refreshDayAggregationCache: publicProcedure
-        .mutation(async () => {
-            // TODO refresh those with finalized: false
-            // TODO crete new ones
-        })
 });
