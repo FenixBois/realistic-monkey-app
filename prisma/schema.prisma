@@ -42,6 +42,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  role          Role      @default(USER)
 }
 
 model VerificationToken {
@@ -98,4 +99,9 @@ enum StationState {
   REGISTERED
   ACTIVE
   INACTIVE
+}
+
+enum Role {
+  USER
+  ADMIN
 }

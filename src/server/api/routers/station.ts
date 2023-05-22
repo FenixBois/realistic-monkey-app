@@ -3,6 +3,7 @@ import {z} from "zod";
 import {TRPCError} from "@trpc/server";
 import {type Prisma, StationState} from "@prisma/client";
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
+import {Role} from ".prisma/client";
 
 // TODO move validations elsewhere
 
@@ -83,6 +84,7 @@ export const stationRouter = createTRPCRouter({
                 }
                 await prisma.stationData.updateMany({
                     where: {
+                        stationId: station.id,
                         OR: [
                             // TODO extend range
                             {datetime: {lte: max, gte: min}, aggregation: "DAY"},
@@ -96,7 +98,7 @@ export const stationRouter = createTRPCRouter({
                 };
             })
         }),
-    registered: protectedProcedure
+    registered: protectedProcedure(Role.ADMIN)
         .query(async ({ctx: {prisma}}) => {
             return prisma.station.findMany({where: {state: "REGISTERED"}});
         }),
@@ -108,7 +110,7 @@ export const stationRouter = createTRPCRouter({
         .query(async ({input: {id}, ctx: {prisma}}) => {
             return prisma.station.findUnique({where: {id}});
         }),
-    activate: protectedProcedure
+    activate: protectedProcedure(Role.ADMIN)
         .input(z.object({
             id: z.string().cuid(),
             locationId: z.string().cuid().optional()
@@ -126,7 +128,7 @@ export const stationRouter = createTRPCRouter({
                 return prisma.station.update({where: {id}, data: {state: "ACTIVE", location}})
             })
         }),
-    deactivate: protectedProcedure
+    deactivate: protectedProcedure(Role.ADMIN)
         .input(z.object({
             id: z.string().cuid()
         }))
@@ -142,7 +144,7 @@ export const stationRouter = createTRPCRouter({
                 return prisma.station.update({where, data: {state: "INACTIVE"}})
             })
         }),
-    edit: protectedProcedure
+    edit: protectedProcedure(Role.ADMIN)
         .input(z.object({
             id: z.string().cuid(),
             name: z.string()
@@ -150,7 +152,7 @@ export const stationRouter = createTRPCRouter({
         .mutation(async ({input: {id, ...data}, ctx: {prisma}}) => {
             return prisma.station.update({where: {id}, data})
         }),
-    delete: protectedProcedure
+    delete: protectedProcedure(Role.ADMIN)
         .input(z.object({
             id: z.string().cuid()
         })).mutation(async ({input: where, ctx: { prisma }}) => {
