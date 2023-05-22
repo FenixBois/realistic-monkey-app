@@ -43,9 +43,13 @@ export const stationDataRouter = createTRPCRouter({
         .input(getDataSchema)
         .query(async ({input: {stationId, granularity, from: gte, to: lte}, ctx: {prisma}}) => {
             const numberOfMinutes = numberOfMinutesForGranularity[granularity];
-            return await prisma.$queryRaw`SELECT AVG(temperature) temperature, AVG(humidity) humidity, ROUND(extract(epoch from datetime) / (60 * ${numberOfMinutes})) datetime 
+            const data = (await prisma.$queryRaw`SELECT AVG(temperature)                                                t,
+                                                 AVG(humidity)                                                   h,
+                                                 ROUND(extract(epoch from "datetime") / (60 * ${numberOfMinutes})) d
                                           FROM "StationData"
                                           WHERE "stationId" = ${stationId} AND datetime >= ${gte} AND datetime <= ${lte}
-                                          GROUP BY ROUND(extract(epoch from datetime) / (60 * ${numberOfMinutes}))`
+                                          GROUP BY d
+                                          ORDER BY d`) as {t: number, h: number, d: number}[];
+            return data.map(({t: temperature,h: humidity,d: datetime}) => ({temperature, humidity, datetime}))
         }),
 });
