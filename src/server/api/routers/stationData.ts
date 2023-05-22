@@ -59,7 +59,7 @@ export const stationDataRouter = createTRPCRouter({
             const numberOfMinutes = numberOfMinutesForGranularity[granularity];
             return await prisma.$queryRaw`SELECT AVG(temperature) temperature, AVG(humidity) humidity, ROUND(extract(epoch from datetime) / (60 * ${numberOfMinutes})) datetime 
                                           FROM "StationData"
-                                          WHERE stationId = ${stationId} AND datetime >= ${gte} AND date <= ${lte}
+                                          WHERE stationId = ${stationId} AND datetime >= ${gte} AND datetime <= ${lte}
                                           GROUP BY ROUND(extract(epoch from datetime) / (60 * ${numberOfMinutes}))`
         }),
 });
