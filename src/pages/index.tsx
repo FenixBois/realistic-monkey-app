@@ -5,7 +5,7 @@ import { LocationList, Layout } from '@components';
 const Home: NextPage = () => {
     return (
         <Layout>
-            <LocationList></LocationList>
+            <LocationList />
         </Layout>
     );
 };

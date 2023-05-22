@@ -4,7 +4,6 @@ import { Avatar, Group, Text } from '@mantine/core';
 export function UserProfile() {
     const { data } = useSession();
 
-    console.log(data?.user?.image);
     return (
         <div>
             <Group>
