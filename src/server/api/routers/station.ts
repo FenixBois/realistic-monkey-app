@@ -89,8 +89,7 @@ export const stationRouter = createTRPCRouter({
                                 stationId: station.id,
                                 datetime: batch.date,
                                 humidity: batch.humidity,
-                                temperature: batch.temperature,
-                                aggregation: 'NONE',
+                                temperature: batch.temperature
                             } satisfies Prisma.StationDataCreateManyInput)
                     );
                     try {
@@ -108,23 +107,6 @@ export const stationRouter = createTRPCRouter({
                         }
                         throw e;
                     }
-                    await prisma.stationData.updateMany({
-                        where: {
-                            stationId: station.id,
-                        OR: [
-                            // TODO extend range
-                            {
-                                    datetime: { lte: max, gte: min },
-                                    aggregation: 'DAY',
-                                },
-                                {
-                                    datetime: { lte: max, gte: min },
-                                    aggregation: 'HOUR',
-                                },
-                            ],
-                        },
-                        data: { aggregationFinalized: false },
-                    });
                     return {
                         result: 'Data uploaded',
                         state: station.state,

@@ -30,6 +30,7 @@ export function StationsAdmin() {
             <h1>Stations Admin</h1>
             {registeredStations.map((station) => (
                 <Paper
+                    key={station.id}
                     withBorder
                     radius='md'
                     p='md'
