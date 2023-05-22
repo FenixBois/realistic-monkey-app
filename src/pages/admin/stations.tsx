@@ -1,8 +1,10 @@
-import { authOptions } from '~/server/auth';
-import { getServerSession } from 'next-auth/next';
-import { StationsAdmin } from '~/components/station/stations-admin';
-import { Layout } from '~/layout/layout';
 import { Role } from '@prisma/client';
+import { getServerSession } from 'next-auth/next';
+
+import { StationsAdmin, Layout } from '@components';
+
+import { authOptions } from '~/server/auth';
+
 export default function Stations() {
     return (
         <Layout>
@@ -11,9 +13,6 @@ export default function Stations() {
     );
 }
 
-
-
-
 // @ts-ignore
 export async function getServerSideProps(context) {
     const session = await getServerSession(
@@ -21,7 +20,6 @@ export async function getServerSideProps(context) {
         context.res,
         authOptions
     );
-
 
     if (!session || (session && session.user.role !== Role.ADMIN)) {
         return {

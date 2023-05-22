@@ -7,6 +7,8 @@ import { api } from '~/utils/api';
 import '~/styles/globals.css';
 import { MantineProvider } from '@mantine/core';
 
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
 const MyApp: AppType<{ session: Session | null }> = ({
     Component,
     pageProps: { session, ...pageProps },
@@ -19,6 +21,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
                 theme={{ colorScheme: 'dark', primaryColor: 'yellow' }}
             >
                 <Component {...pageProps} />
+                <ReactQueryDevtools initialIsOpen={true} />
             </MantineProvider>
         </SessionProvider>
     );

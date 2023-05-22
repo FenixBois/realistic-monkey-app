@@ -1,9 +1,8 @@
-import { type NextPage } from "next";
-import { Layout } from '~/layout/layout';
-import {LocationList} from '~/components/location/location-list';
+import { type NextPage } from 'next';
+
+import { LocationList, Layout } from '@components';
 
 const Home: NextPage = () => {
-
     return (
         <Layout>
             <LocationList></LocationList>
