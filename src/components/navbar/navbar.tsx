@@ -2,7 +2,8 @@ import { Button, Container, Flex, Group, Header, Title } from '@mantine/core';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Role } from '@prisma/client';
-import { UserProfile } from '~/components/user/user-profile';
+
+import { UserProfile } from '@components';
 
 export function Navbar() {
     const { data: session } = useSession();
@@ -10,6 +11,7 @@ export function Navbar() {
     const handleClick = async () => {
         await signIn('google');
     };
+
     return (
         <Header height={60}>
             <Container
@@ -50,7 +52,6 @@ export function Navbar() {
 
                         <>
                             <UserProfile />
-
                             <Button onClick={() => signOut()} variant='default'>
                                 Sign out
                             </Button>
@@ -58,7 +59,6 @@ export function Navbar() {
                     </Group>
                 ) : (
                     <Group>
-                        <Link href='/'></Link>
                         <Button onClick={handleClick}>Sign in</Button>
                     </Group>
                 )}

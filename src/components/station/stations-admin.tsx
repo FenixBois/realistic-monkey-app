@@ -1,7 +1,9 @@
-import { api } from '~/utils/api';
 import { Button, Flex, Loader, Modal, Paper, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { LocationSelect } from '~/components/location/location-select';
+
+import { LocationSelect } from '@components';
+
+import { api } from '~/utils/api';
 
 export function StationsAdmin() {
     const [opened, { open, close }] = useDisclosure(false);
@@ -9,7 +11,7 @@ export function StationsAdmin() {
         isLoading,
         isError,
         error,
-        data: registeredStations
+        data: registeredStations,
     } = api.station.registered.useQuery();
 
     if (isLoading) {
@@ -37,8 +39,8 @@ export function StationsAdmin() {
                             backgroundColor:
                                 theme.colorScheme === 'dark'
                                     ? theme.colors.gray
-                                    : theme.colors.gray[1]
-                        }
+                                    : theme.colors.gray[1],
+                        },
                     })}
                 >
                     <Flex justify='space-between' align='center'>
