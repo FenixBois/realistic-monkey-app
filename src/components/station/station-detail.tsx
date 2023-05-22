@@ -1,5 +1,6 @@
 import { Title, Text, Group } from '@mantine/core';
 import { RouterOutputs } from '~/utils/api';
+import { Dashboard } from '~/components';
 
 type StationOutput = RouterOutputs['station']['getById'];
 
@@ -27,6 +28,8 @@ export function StationDetail({ station }: StationDetailProps) {
                 <Text>{station.location?.name}</Text>
                 <Text>{station.gatewayInfo}</Text>
             </Group>
+
+            <Dashboard stationId={station.id} />
         </div>
     );
 }
