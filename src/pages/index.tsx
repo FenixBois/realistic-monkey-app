@@ -1,11 +1,19 @@
 import { type NextPage } from 'next';
 
-import { LocationList, Layout } from '@components';
+import { Layout, Chart } from '@components';
+import { Grid } from '@mantine/core';
 
 const Home: NextPage = () => {
     return (
         <Layout>
-            <LocationList />
+            <Grid>
+                <Grid.Col span={6}>
+                    <Chart />
+                </Grid.Col>
+                <Grid.Col span={6}>
+                    <Chart />
+                </Grid.Col>
+            </Grid>
         </Layout>
     );
 };
