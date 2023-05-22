@@ -25,7 +25,7 @@ export default function Location({ id }: { id: string }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const { id } = context.query;
+    const { id } =  context.query;
 
     return {
         props: {
