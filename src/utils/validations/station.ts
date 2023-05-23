@@ -28,7 +28,7 @@ export const getDataSchema = dataSchema
     })
     .refine(
         ({ from, to, granularity }) =>
-            (to.valueOf() - from.valueOf()) / 1000 <
+            (to.valueOf() - from.valueOf()) / 1000 <=
             maxDifferenceForGranularityInSeconds[granularity],
         ({ granularity }) => ({
             message: `Max difference allowed is ${
