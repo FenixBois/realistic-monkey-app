@@ -8,6 +8,7 @@ export const Controls = () => {
     const form = useFormContext();
 
     const data = [
+        { value: StationDataGranularity.MINUTE, label: '1 minute' },
         { value: StationDataGranularity.FIVE_MINUTES, label: '5 minutes' },
         { value: StationDataGranularity.TEN_MINUTES, label: '10 minutes' },
         { value: StationDataGranularity.HALF_HOUR, label: '30 minutes' },
