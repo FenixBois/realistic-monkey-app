@@ -1,5 +1,5 @@
 import { Grid, Select } from '@mantine/core';
-import { DateInput, DateTimePicker } from '@mantine/dates';
+import { DateTimePicker } from '@mantine/dates';
 
 import { useFormContext } from '~/components/dashboard/dashboard';
 import { StationDataGranularity } from '~/utils/validations';
@@ -24,6 +24,7 @@ export const Controls = () => {
                         placeholder='From date'
                         mx='auto'
                         {...form.getInputProps('from')}
+                        valueFormat='DD.MM YYYY hh:mm'
                     />
                 </Grid.Col>
                 <Grid.Col span={4}>
@@ -32,6 +33,7 @@ export const Controls = () => {
                         placeholder='To date'
                         mx='auto'
                         {...form.getInputProps('to')}
+                        valueFormat='DD.MM YYYY hh:mm'
                     />
                 </Grid.Col>
 

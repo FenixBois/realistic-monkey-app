@@ -37,11 +37,12 @@ export function LocationSelect({ stationId, onSubmit }: LocationSelectProps) {
     const createItem = (query: string) => {
         locationMutation.mutateAsync({ name: query }).then((data) => {
             setLocations((locations) => [...locations, { value: data.id, label: data.name }]);
+            form.setFieldValue('locationId', data.id);
         }).catch((error) => {
             throw error;
         });
 
-        return { value: query, label: query };
+        return null;
     };
 
     const activateStation = () => {
