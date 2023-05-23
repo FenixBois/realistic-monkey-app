@@ -1,4 +1,15 @@
-import { ActionIcon, Affix, Button, Container, Flex, Group, Header, Title, useMantineColorScheme } from '@mantine/core';
+import {
+    ActionIcon,
+    Affix,
+    Button,
+    Container,
+    Flex,
+    Group,
+    Header,
+    MediaQuery,
+    Title,
+    useMantineColorScheme,
+} from '@mantine/core';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Role } from '@prisma/client';
@@ -22,7 +33,7 @@ export function Navbar() {
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    height: '100%'
+                    height: '100%',
                 }}
             >
                 <Flex align='baseline' gap='md'>
@@ -32,7 +43,13 @@ export function Navbar() {
                             mr={16}
                             sx={{ '&:hover': { textDecoration: 'underline' } }}
                         >
-                            🍌 Realistic Monkey
+                            🍌
+                            <MediaQuery
+                                smallerThan='sm'
+                                styles={{ display: 'none' }}
+                            >
+                                <span>Realistic Monkey</span>
+                            </MediaQuery>
                         </Title>
                     </Link>
                     <Link href='/' passHref>

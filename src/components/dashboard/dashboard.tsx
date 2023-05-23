@@ -61,10 +61,15 @@ export const Dashboard = ({ stationId }: IDashboardProps) => {
     const humidityChartData = {
         labels:
             humidity?.map(({ datetime }) =>
-                new Date(datetime).toLocaleTimeString('cs-CZ', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                })
+                form.values.granularity === StationDataGranularity.DAY
+                    ? new Date(datetime).toLocaleDateString('cs-CZ', {
+                          day: '2-digit',
+                          month: '2-digit',
+                      })
+                    : new Date(datetime).toLocaleTimeString('cs-CZ', {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                      })
             ) ?? [],
         datasets: [
             {
@@ -81,10 +86,15 @@ export const Dashboard = ({ stationId }: IDashboardProps) => {
     const temperatureChartData = {
         labels:
             temperature?.map(({ datetime }) =>
-                new Date(datetime).toLocaleTimeString('cs-CZ', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                })
+                form.values.granularity === StationDataGranularity.DAY
+                    ? new Date(datetime).toLocaleDateString('cs-CZ', {
+                          day: '2-digit',
+                          month: '2-digit',
+                      })
+                    : new Date(datetime).toLocaleTimeString('cs-CZ', {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                      })
             ) ?? [],
         datasets: [
             {
@@ -101,16 +111,16 @@ export const Dashboard = ({ stationId }: IDashboardProps) => {
     return (
         <FormProvider form={form}>
             <Controls />
-            {isLoading ? (
+            {isLoading && form.isValid() ? (
                 <Flex justify={'center'} p={20}>
                     <Loader />
                 </Flex>
             ) : (
                 <Grid pt={20}>
-                    <Grid.Col span={6}>
+                    <Grid.Col md={6}>
                         <Chart data={humidityChartData} />
                     </Grid.Col>
-                    <Grid.Col span={6}>
+                    <Grid.Col md={6}>
                         <Chart data={temperatureChartData} />
                     </Grid.Col>
                 </Grid>
