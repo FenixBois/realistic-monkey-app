@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Paper, Title, Text, Loader, Accordion } from '@mantine/core';
+import { Paper, Title, Text, Loader, Accordion, Flex } from '@mantine/core';
 import { api } from '~/utils/api';
 
 export function LocationList() {
@@ -11,7 +11,11 @@ export function LocationList() {
     } = api.location.getAll.useQuery();
 
     if (isLoading) {
-        return <Loader />;
+        return (
+            <Flex justify={'center'} p={20}>
+                <Loader />
+            </Flex>
+        );
     }
 
     if (isError) {
