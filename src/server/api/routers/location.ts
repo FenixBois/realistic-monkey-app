@@ -10,7 +10,7 @@ export const locationRouter = createTRPCRouter({
             return prisma.location.create({data});
         }),
     getAll: publicProcedure.query(async ({ ctx: { prisma } }) => {
-        return prisma.location.findMany({ include: { stations: true } });
+        return prisma.location.findMany({ include: { stations: {where: {state: "ACTIVE"}} } });
     }),
     getById: publicProcedure
         .input(z.object({

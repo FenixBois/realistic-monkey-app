@@ -35,7 +35,7 @@ export function Navbar() {
                             🍌 Realistic Monkey
                         </Title>
                     </Link>
-                    <Link href='/locations' passHref>
+                    <Link href='/' passHref>
                         <Title
                             order={5}
                             mr={16}
