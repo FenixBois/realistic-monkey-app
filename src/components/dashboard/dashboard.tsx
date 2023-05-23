@@ -13,8 +13,8 @@ type ControlsForm = z.infer<typeof getDataSchema>;
 
 const initialControls = {
     granularity: StationDataGranularity.FIVE_MINUTES,
-    from: new Date(),
-    to: new Date(Date.now() + 1000 * 60 * 60),
+    from: new Date(Date.now() - 1000 * 60 * 60),
+    to: new Date(),
 };
 
 export const [FormProvider, useFormContext, useForm] =
