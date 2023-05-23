@@ -61,7 +61,10 @@ export const Dashboard = ({ stationId }: IDashboardProps) => {
     const humidityChartData = {
         labels:
             humidity?.map(({ datetime }) =>
-                new Date(datetime).toLocaleTimeString('cs-CZ')
+                new Date(datetime).toLocaleTimeString('cs-CZ', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                })
             ) ?? [],
         datasets: [
             {
@@ -78,7 +81,10 @@ export const Dashboard = ({ stationId }: IDashboardProps) => {
     const temperatureChartData = {
         labels:
             temperature?.map(({ datetime }) =>
-                new Date(datetime).toLocaleTimeString('cs-CZ')
+                new Date(datetime).toLocaleTimeString('cs-CZ', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                })
             ) ?? [],
         datasets: [
             {
