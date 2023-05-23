@@ -11,22 +11,6 @@ import {Role} from "@prisma/client";
 
 // TODO move validations elsewhere
 
-const findExtremes = (data: z.infer<typeof uploadDataSchema>['data']) => {
-    let min = data[0]!.date;
-    let max = min;
-
-    for (const { date } of data) {
-        if (min > date) {
-            min = date;
-        }
-        if (max < date) {
-            max = date;
-        }
-    }
-
-    return { min, max };
-};
-
 const registerSchema = z.object({
     identifier: z.string().max(100),
 });
@@ -82,7 +66,6 @@ export const stationRouter = createTRPCRouter({
                             code: 'BAD_REQUEST',
                         });
                     }
-                    const { min, max } = findExtremes(batchData);
                     const data = batchData.map(
                         (batch) =>
                             ({
